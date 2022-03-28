@@ -1,0 +1,57 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 500,
+    "height": 500,
+    "params": [
+        {
+            "name": "numpeople",
+            "select": "point"
+        }
+    ],
+    "data": {
+        "url": "https://raw.githubusercontent.com/sakaratsooksang/advmap/main/geodata.json",
+        "format": {
+            "type": "topojson",
+            "feature": "geodata"
+        }
+    },
+    "transform": [
+        {
+            "lookup": "properties.dcode",
+            "from": {
+                "data": {
+                    "url": "https://raw.githubusercontent.com/sakaratsooksang/advmap/main/att.csv"
+                },
+                "key": "dcode",
+                "fields": [
+                    "no_people"
+                ]
+            }
+        }
+    ],
+    "projection": {
+        "type": "transverseMercator"
+    },
+    "mark": {
+        "type": "geoshape",
+        "stroke": "#757575",
+        "strokeWidth": 0.5
+    },
+    "encoding": {
+        "color": {
+            "condition": {
+                "param": "numpeople",
+                "field": "no_people",
+                "type": "quantitative"
+            },
+            "value": "grey"
+        },
+        "opacity": {
+            "condition": {
+                "param": "numpeople",
+                "value": 1
+            },
+            "value": 0.2
+        }
+    }
+}
