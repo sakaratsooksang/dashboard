@@ -1,13 +1,7 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "width": 500,
-    "height": 500,
-    "params": [
-        {
-            "name": "numpeople",
-            "select": "point"
-        }
-    ],
+    "width": 1000,
+    "height": 1000,
     "data": {
         "url": "https://raw.githubusercontent.com/sakaratsooksang/advmap/main/geodata.json",
         "format": {
@@ -29,29 +23,85 @@
             }
         }
     ],
-    "projection": {
-        "type": "transverseMercator"
-    },
-    "mark": {
-        "type": "geoshape",
-        "stroke": "#757575",
-        "strokeWidth": 0.5
-    },
-    "encoding": {
-        "color": {
-            "condition": {
-                "param": "numpeople",
-                "field": "no_people",
-                "type": "quantitative"
+    "vconcat": [
+        {   
+            "width": 1000,
+            "height": 500,
+            "params": [
+                {
+                    "name": "pts",
+                    "select": {
+                        "type": "point",
+                        "encodings": [
+                            "x"
+                        ],
+                        "on": "mouseover"
+                    }
+                }
+            ],
+            "projection": {
+                "type": "transverseMercator"
             },
-            "value": "grey"
+            "mark": {
+                "type": "geoshape",
+                "stroke": "#757575",
+                "strokeWidth": 0.5
+            },
+            "encoding": {
+                "color": {
+                    "condition": {
+                        "param": "pts",
+                        "field": "no_people",
+                        "type": "quantitative"
+                    },
+                    "value": "grey"
+                },
+                "opacity": {
+                    "condition": {
+                        "param": "pts",
+                        "value": 1
+                    },
+                    "value": 0.2
+                }
+            }
         },
-        "opacity": {
-            "condition": {
-                "param": "numpeople",
-                "value": 1
-            },
-            "value": 0.2
+        {
+            "width": 1000,
+            "height": 500,
+            "mark": "bar",
+            "params": [
+                {
+                    "name": "pts",
+                    "select": {
+                        "type": "point",
+                        "encodings": [
+                            "x"
+                        ],
+                        "on": "mouseover"
+                    }
+                }
+            ],
+            "encoding": {
+                "x": {
+                    "field": "properties.dname",
+                    "type": "nominal"
+                },
+                "y": {
+                    "field": "no_people",
+                    "type": "quantitative"
+                },
+                "color": {
+                    "field": "no_people",
+                    "type": "quantitative"
+                },
+                "opacity": {
+                    "condition": {
+                        "param": "pts",
+                        "value": 1
+                    },
+                    "value": 0.5
+                }
+            }
         }
-    }
+    ]
 }
